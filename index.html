@@ -558,7 +558,8 @@ function loadImg(id, base) {
   }
   tryNext();
 }
-['p1','p2','p3','p4','p5'].forEach((id,i) => loadImg(id, 'photo'+(i+1)));
+loadImg('p1','photo1'); loadImg('p2','photo3'); loadImg('p3','photo4');
+loadImg('p4','photo2'); loadImg('p5','photo5');
 
 /* ── Intersection observer ── */
 const io = new IntersectionObserver(e => e.forEach(x => {
