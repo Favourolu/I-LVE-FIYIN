@@ -610,19 +610,14 @@ function drawPixel(ctx,grid,ox,oy,size){
 }
 
 const _ = null;
-const S='#3d1a10', // dark skin
-      D='#2a1008', // darker skin / shadow
-      H='#1a0a00', // hair black
-      E='#0a0500', // eyes
-      W='#ffffff', // white
-      R='#e8637a', // rose
-      B='#1a3a6a', // shirt blue (Favour)
-      G='#2d5a27', // trouser
-      P='#e8a0b0', // dress pink (Fiyin)
-      N='#c97a8a', // dress shading
-      K='#a05a6a'; // hair highlight
+// Favour (dark skin)
+const S='#3d1a10', D='#2a1008', H='#1a0a00', E='#0a0500',
+      B='#1a3a6a', G='#2d5a27';
+// Fiyin (light skin)
+const LS='#e8b89a', LD='#d4956e', LH='#2a1a0a', LE='#1a0a00',
+      R='#e8637a', P='#e8a0b0', N='#c97a8a', K='#5a3520';
 
-// Favour pixel art (10 cols x 14 rows)
+// Favour pixel art (10 cols x 14 rows) — dark skin
 const favour = [
   [_,_,H,H,H,H,H,_,_,_],
   [_,H,H,H,H,H,H,H,_,_],
@@ -640,22 +635,22 @@ const favour = [
   [_,H,H,_,_,H,H,_,_,_],
 ];
 
-// Fiyin pixel art (10 cols x 14 rows)
+// Fiyin pixel art (10 cols x 14 rows) — light skin
 const fiyin = [
   [_,_,K,K,K,K,K,_,_,_],
-  [_,K,K,H,H,H,K,K,_,_],
-  [_,_,S,S,S,S,S,_,_,_],
-  [_,_,S,E,S,E,S,_,_,_],
-  [_,_,S,S,R,S,S,_,_,_],
-  [_,_,S,S,S,S,S,_,_,_],
+  [_,K,K,LH,LH,LH,K,K,_,_],
+  [_,_,LS,LS,LS,LS,LS,_,_,_],
+  [_,_,LS,LE,LS,LE,LS,_,_,_],
+  [_,_,LS,LS,R,LS,LS,_,_,_],
+  [_,_,LS,LD,LS,LD,LS,_,_,_],
   [_,P,P,P,P,P,P,P,_,_],
   [_,P,N,P,P,P,N,P,_,_],
   [_,P,P,P,P,P,P,P,_,_],
-  [_,P,S,P,P,P,S,P,_,_],
+  [_,P,LS,P,P,P,LS,P,_,_],
   [_,N,N,N,N,N,N,N,_,_],
   [_,_,N,N,_,N,N,_,_,_],
-  [_,_,S,S,_,S,S,_,_,_],
-  [_,_,H,H,_,H,H,_,_,_],
+  [_,_,LS,LS,_,LS,LS,_,_,_],
+  [_,_,LH,LH,_,LH,LH,_,_,_],
 ];
 
 const SZ = 8;
