@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>I ❤️ Fiyinfoluwa</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>"/>
+<link rel="manifest" href="manifest.json"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="I ❤️ Fiyin"/>
+<meta name="theme-color" content="#e8637a"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap"/>
 <style>
@@ -279,7 +285,7 @@ button{cursor:pointer;border:none;background:none;font:inherit}
 .gallery-strip .g-item:nth-child(2){grid-column:3;grid-row:1;aspect-ratio:4/5}
 .gallery-strip .g-item:nth-child(3){grid-column:1;grid-row:2;aspect-ratio:4/5}
 .gallery-strip .g-item:nth-child(4){grid-column:2/4;grid-row:2;aspect-ratio:16/10}
-.gallery-strip .g-item:nth-child(5){display:none}
+.gallery-strip .g-item:nth-child(5){grid-column:1/4;grid-row:3;aspect-ratio:16/7}
 .g-item img{
   width:100%;height:100%;object-fit:cover;
   transition:transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
@@ -313,27 +319,27 @@ button{cursor:pointer;border:none;background:none;font:inherit}
     </div>
     <div class="gallery-strip reveal" style="transition-delay:0.15s">
       <div class="g-item">
-        <img src="images/photo1.jpg" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p1" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
         <div class="g-fallback">🥰</div>
-        <span class="g-label">NYSC days 🏕️</span>
+        <span class="g-label">My forever 🤍</span>
       </div>
       <div class="g-item">
-        <img src="images/photo2.jpg" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p2" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
         <div class="g-fallback">💑</div>
         <span class="g-label">My princess 👑</span>
       </div>
       <div class="g-item">
-        <img src="images/photo3.jpg" alt="Fiyin" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p3" alt="Fiyin" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
         <div class="g-fallback">🌸</div>
         <span class="g-label">She's everything 💕</span>
       </div>
       <div class="g-item">
-        <img src="images/photo4.jpg" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p4" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
         <div class="g-fallback">❤️</div>
         <span class="g-label">Forever vibes ✨</span>
       </div>
       <div class="g-item">
-        <img src="images/photo5.jpg" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p5" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
         <div class="g-fallback">🌹</div>
       </div>
     </div>
@@ -545,6 +551,22 @@ canvas.pixel-char{image-rendering:pixelated;image-rendering:crisp-edges}
 </footer>
 
 <script>
+/* ── Smart image loader (tries jpg, JPG, jpeg) ── */
+function loadImg(id, base) {
+  const exts = ['jpg','JPG','jpeg','JPEG','png'];
+  const img = document.getElementById(id);
+  if (!img) return;
+  let i = 0;
+  function tryNext() {
+    if (i >= exts.length) { img.style.display='none'; img.nextElementSibling.style.display='flex'; return; }
+    img.onerror = tryNext;
+    img.src = 'images/' + base + '.' + exts[i++];
+  }
+  tryNext();
+}
+loadImg('p1','photo1'); loadImg('p2','photo3'); loadImg('p3','photo4');
+loadImg('p4','photo2'); loadImg('p5','photo5');
+
 /* ── Intersection observer ── */
 const io = new IntersectionObserver(e => e.forEach(x => {
   if(x.isIntersecting) x.target.classList.add('visible');
@@ -610,19 +632,14 @@ function drawPixel(ctx,grid,ox,oy,size){
 }
 
 const _ = null;
-const S='#3d1a10', // dark skin
-      D='#2a1008', // darker skin / shadow
-      H='#1a0a00', // hair black
-      E='#0a0500', // eyes
-      W='#ffffff', // white
-      R='#e8637a', // rose
-      B='#1a3a6a', // shirt blue (Favour)
-      G='#2d5a27', // trouser
-      P='#e8a0b0', // dress pink (Fiyin)
-      N='#c97a8a', // dress shading
-      K='#a05a6a'; // hair highlight
+// Favour (dark skin)
+const S='#3d1a10', D='#2a1008', H='#1a0a00', E='#0a0500',
+      B='#1a3a6a', G='#2d5a27';
+// Fiyin (light skin)
+const LS='#e8b89a', LD='#d4956e', LH='#2a1a0a', LE='#1a0a00',
+      R='#e8637a', P='#e8a0b0', N='#c97a8a', K='#5a3520';
 
-// Favour pixel art (10 cols x 14 rows)
+// Favour pixel art (10 cols x 14 rows) — dark skin
 const favour = [
   [_,_,H,H,H,H,H,_,_,_],
   [_,H,H,H,H,H,H,H,_,_],
@@ -640,22 +657,22 @@ const favour = [
   [_,H,H,_,_,H,H,_,_,_],
 ];
 
-// Fiyin pixel art (10 cols x 14 rows)
+// Fiyin pixel art (10 cols x 14 rows) — light skin
 const fiyin = [
   [_,_,K,K,K,K,K,_,_,_],
-  [_,K,K,H,H,H,K,K,_,_],
-  [_,_,S,S,S,S,S,_,_,_],
-  [_,_,S,E,S,E,S,_,_,_],
-  [_,_,S,S,R,S,S,_,_,_],
-  [_,_,S,S,S,S,S,_,_,_],
+  [_,K,K,LH,LH,LH,K,K,_,_],
+  [_,_,LS,LS,LS,LS,LS,_,_,_],
+  [_,_,LS,LE,LS,LE,LS,_,_,_],
+  [_,_,LS,LS,R,LS,LS,_,_,_],
+  [_,_,LS,LD,LS,LD,LS,_,_,_],
   [_,P,P,P,P,P,P,P,_,_],
   [_,P,N,P,P,P,N,P,_,_],
   [_,P,P,P,P,P,P,P,_,_],
-  [_,P,S,P,P,P,S,P,_,_],
+  [_,P,LS,P,P,P,LS,P,_,_],
   [_,N,N,N,N,N,N,N,_,_],
   [_,_,N,N,_,N,N,_,_,_],
-  [_,_,S,S,_,S,S,_,_,_],
-  [_,_,H,H,_,H,H,_,_,_],
+  [_,_,LS,LS,_,LS,LS,_,_,_],
+  [_,_,LH,LH,_,LH,LH,_,_,_],
 ];
 
 const SZ = 8;
