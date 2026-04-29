@@ -502,6 +502,88 @@ button{cursor:pointer;border:none;background:none;font:inherit}
   </div>
 </section>
 
+<!-- ═══ VIDEOS ═══ -->
+<style>
+.videos{background:var(--dark2);padding:7rem 2rem}
+.videos-inner{max-width:900px;margin:0 auto}
+.videos-header{text-align:center;margin-bottom:3.5rem}
+.videos-header .section-title{color:#fff}
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem}
+.video-card{
+  border-radius:20px;overflow:hidden;position:relative;
+  background:#1a0a0e;aspect-ratio:9/16;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+  cursor:pointer;
+}
+@media(max-width:640px){.video-grid{grid-template-columns:1fr}}
+.video-card video{
+  width:100%;height:100%;object-fit:cover;
+  display:block;
+}
+.video-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.5) 0%,transparent 50%);
+  pointer-events:none;
+}
+.video-label{
+  position:absolute;bottom:1rem;left:1rem;
+  background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);
+  padding:0.3rem 0.9rem;border-radius:50px;
+  font-size:0.72rem;color:#fff;letter-spacing:0.05em;
+}
+.video-missing{
+  width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:0.5rem;
+  color:rgba(255,255,255,0.2);font-size:0.8rem;
+}
+.video-missing span{font-size:2rem}
+</style>
+
+<section class="videos" id="videos">
+  <div class="videos-inner">
+    <div class="videos-header reveal">
+      <p class="section-label">Moving Memories</p>
+      <h2 class="section-title">Our <em>moments</em> 🎬</h2>
+    </div>
+    <div class="video-grid">
+      <div class="video-card reveal">
+        <video id="v1" autoplay muted loop playsinline preload="none">
+          <source src="videos/video1.mp4" type="video/mp4"/>
+        </video>
+        <div class="video-overlay"></div>
+        <span class="video-label">Us 🤍</span>
+      </div>
+      <div class="video-card reveal" style="transition-delay:0.1s">
+        <video id="v2" autoplay muted loop playsinline preload="none">
+          <source src="videos/video2.mp4" type="video/mp4"/>
+        </video>
+        <div class="video-overlay"></div>
+        <span class="video-label">My princess 👑</span>
+      </div>
+      <div class="video-card reveal" style="transition-delay:0.2s">
+        <video id="v3" autoplay muted loop playsinline preload="none">
+          <source src="videos/video3.mp4" type="video/mp4"/>
+        </video>
+        <div class="video-overlay"></div>
+        <span class="video-label">Forever 💕</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// Play videos only when visible
+const vio = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    const v = e.target.querySelector('video');
+    if (!v) return;
+    if (e.isIntersecting) { v.play().catch(()=>{}); }
+    else { v.pause(); }
+  });
+}, {threshold: 0.3});
+document.querySelectorAll('.video-card').forEach(c => vio.observe(c));
+</script>
+
 <!-- ═══ PIXEL ART + CLOSING ═══ -->
 <style>
 .pixel-section{
