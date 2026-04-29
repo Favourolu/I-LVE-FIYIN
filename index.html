@@ -182,8 +182,9 @@ button{cursor:pointer;border:none;background:none;font:inherit}
   display:flex;align-items:center;justify-content:center;
   font-size:3rem;
 }
-.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.85s,transform 0.85s}
-.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal{opacity:0;transition:opacity 1s cubic-bezier(0.25,0.46,0.45,0.94)}
+.reveal.visible{opacity:1}
+.hero-content,.story-img-frame img,.askout-img-frame img,.askout-card,.g-item,.video-card,.pixel-stage{will-change:transform}
 </style>
 
 <section class="story" id="story">
@@ -763,6 +764,102 @@ document.addEventListener('click',e=>{
     setTimeout(()=>el.remove(),2100);
   }
 });
+
+/* ── Apple-style scroll-driven parallax engine ── */
+(function(){
+  const lerp = (a,b,t) => a+(b-a)*t;
+  const clamp = (v,lo,hi) => Math.max(lo,Math.min(hi,v));
+
+  // 0 = element just entering bottom of screen, 1 = just exiting top
+  function scrollP(el){
+    const r=el.getBoundingClientRect(),h=innerHeight;
+    return clamp((h-r.top)/(h+r.height),0,1);
+  }
+  // -1 = below viewport center, 0 = centered, +1 = above
+  function centerOff(el){
+    const r=el.getBoundingClientRect();
+    return (innerHeight/2-(r.top+r.height/2))/(innerHeight/2);
+  }
+
+  const items=[];
+  function add(el,cfg){ if(el) items.push({el,ly:0,ls:1,...cfg}); }
+
+  // Hero content — scale down + fade as you scroll away
+  add(document.querySelector('.hero-content'),{type:'heroExit'});
+
+  // Story image — classic parallax (image drifts slower than page)
+  add(document.getElementById('story-img'),{type:'imgParallax',amt:50});
+
+  // Askout image — same parallax
+  add(document.getElementById('askout-img'),{type:'imgParallax',amt:50});
+
+  // Askout card — scale from 0.93 → 1 as it enters viewport
+  add(document.querySelector('.askout-card'),{type:'scaleIn',from:0.93});
+
+  // Gallery items — staggered gentle float
+  document.querySelectorAll('.g-item').forEach((el,i)=>
+    add(el,{type:'float',amt:22+(i%2)*8}));
+
+  // Video cards — staggered float
+  document.querySelectorAll('.video-card').forEach((el,i)=>
+    add(el,{type:'float',amt:18+(i%3)*6}));
+
+  // Pixel stage — scale in
+  add(document.querySelector('.pixel-stage'),{type:'scaleIn',from:0.88});
+
+  // Make parallax images oversized so movement never shows a gap
+  setTimeout(()=>{
+    ['story-img','askout-img'].forEach(id=>{
+      const img=document.getElementById(id);
+      if(!img) return;
+      img.style.height='115%';
+      img.style.marginTop='-7.5%';
+      img.style.objectFit='cover';
+    });
+  },400);
+
+  function tick(){
+    items.forEach(({el,type,amt,from,ly,ls},idx,arr)=>{
+      const p=scrollP(el), c=centerOff(el);
+      const item=arr[idx];
+
+      if(type==='heroExit'){
+        const exit=clamp((p-0.22)*2.2,0,1);
+        item.ly=lerp(item.ly,exit,0.09);
+        el.style.transform=`scale(${1-item.ly*0.1}) translateY(${-item.ly*30}px)`;
+        el.style.opacity=Math.max(0,1-item.ly*1.4);
+        return;
+      }
+
+      if(type==='imgParallax'){
+        // image moves counter to scroll → feels slower than the page
+        item.ly=lerp(item.ly,-c*amt,0.07);
+        el.style.transform=`translateY(${item.ly}px)`;
+        return;
+      }
+
+      if(type==='scaleIn'){
+        const enter=clamp((p-0.08)/0.55,0,1);
+        item.ls=lerp(item.ls,from+(1-from)*enter,0.09);
+        el.style.transform=`scale(${item.ls})`;
+        return;
+      }
+
+      if(type==='float'){
+        // gentle Y drift: elements above center rise slightly, below sink
+        item.ly=lerp(item.ly,c*amt,0.055);
+        el.style.transform=`translateY(${item.ly}px)`;
+        return;
+      }
+    });
+    requestAnimationFrame(tick);
+  }
+  tick();
+
+  document.addEventListener('visibilitychange',()=>{
+    if(!document.hidden) requestAnimationFrame(tick);
+  });
+})();
 
 /* ── Pixel art characters ── */
 function drawPixel(ctx,grid,ox,oy,size){
