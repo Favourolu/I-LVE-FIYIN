@@ -122,8 +122,8 @@ button{cursor:pointer;border:none;background:none;font:inherit}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 </style>
 
-<canvas id="hero-canvas" class="hero-particles"></canvas>
 <section class="hero" id="home">
+<canvas id="hero-canvas" class="hero-particles"></canvas>
   <div class="hero-glow"></div>
   <div class="hero-content">
     <span class="hero-badge">3 Months &amp; Counting ✨</span>
@@ -200,7 +200,7 @@ button{cursor:pointer;border:none;background:none;font:inherit}
         <p>November 19th, 2025. The day my life quietly rearranged itself around one person without asking for my permission. I didn't mind at all.</p>
       </div>
       <div class="story-img-frame reveal" style="transition-delay:0.25s">
-        <img src="images/photo4.jpg" alt="Favour and Fiyin" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="story-img" alt="Favour and Fiyin"/>
         <div class="story-img-fallback" style="display:none">💕</div>
       </div>
     </div>
@@ -265,7 +265,7 @@ button{cursor:pointer;border:none;background:none;font:inherit}
   <div class="askout-inner">
     <div class="askout-card reveal">
       <div class="askout-img-frame">
-        <img src="images/photo2.jpg" alt="Us together" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="askout-img" alt="Us together"/>
         <div class="askout-img-fallback" style="display:none">🌹</div>
       </div>
       <div>
@@ -673,22 +673,38 @@ canvas.pixel-char{image-rendering:pixelated;image-rendering:crisp-edges}
 </footer>
 
 <script>
-/* ── Smart image loader (tries jpg, JPG, jpeg) ── */
-function loadImg(id, base) {
-  const exts = ['jpg','JPG','jpeg','JPEG','png'];
+/* ── Robust image loader: fetch HEAD to find real extension ── */
+async function loadImg(id, base, folder) {
+  folder = folder || 'images';
   const img = document.getElementById(id);
   if (!img) return;
-  const bust = '?v=' + Date.now();
-  let i = 0;
-  function tryNext() {
-    if (i >= exts.length) { img.style.display='none'; img.nextElementSibling.style.display='flex'; return; }
-    img.onerror = tryNext;
-    img.src = 'images/' + base + '.' + exts[i++] + bust;
+  const exts = ['jpg','JPG','jpeg','JPEG','heic','HEIC','png','PNG'];
+  const ts = '?t=' + Date.now();
+  function showFallback() {
+    img.style.display = 'none';
+    const fb = img.nextElementSibling;
+    if (fb) fb.style.display = 'flex';
   }
-  tryNext();
+  for (const ext of exts) {
+    const url = folder + '/' + base + '.' + ext + ts;
+    try {
+      const r = await fetch(url, {method:'HEAD', cache:'no-store'});
+      if (r.ok) {
+        img.onerror = showFallback;
+        img.src = url;
+        return;
+      }
+    } catch(e) {}
+  }
+  showFallback();
 }
-loadImg('p1','photo1'); loadImg('p2','photo2'); loadImg('p3','photo3');
-loadImg('p4','photo4'); loadImg('p5','photo5');
+loadImg('p1','photo1');
+loadImg('p2','photo2');
+loadImg('p3','photo3');
+loadImg('p4','photo4');
+loadImg('p5','photo5');
+loadImg('story-img','photo1');
+loadImg('askout-img','photo4');
 
 /* ── Intersection observer ── */
 const io = new IntersectionObserver(e => e.forEach(x => {
