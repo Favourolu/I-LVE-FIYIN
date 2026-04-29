@@ -337,27 +337,27 @@ button{cursor:pointer;border:none;background:none;font:inherit}
     </div>
     <div class="gallery-strip reveal" style="transition-delay:0.15s">
       <div class="g-item">
-        <img id="p1" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p1" alt="Us"/>
         <div class="g-fallback">🥰</div>
         <span class="g-label">My forever 🤍</span>
       </div>
       <div class="g-item">
-        <img id="p2" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p2" alt="Us"/>
         <div class="g-fallback">💑</div>
         <span class="g-label">My princess 👑</span>
       </div>
       <div class="g-item">
-        <img id="p3" alt="Fiyin" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p3" alt="Fiyin"/>
         <div class="g-fallback">🌸</div>
         <span class="g-label">My baby 💕</span>
       </div>
       <div class="g-item">
-        <img id="p4" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p4" alt="Us"/>
         <div class="g-fallback">❤️</div>
         <span class="g-label">My best friend 🌟</span>
       </div>
       <div class="g-item">
-        <img id="p5" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p5" alt="Us"/>
         <div class="g-fallback">🌹</div>
         <span class="g-label">My girl 🌸</span>
       </div>
@@ -560,7 +560,7 @@ button{cursor:pointer;border:none;background:none;font:inherit}
         <video autoplay muted loop playsinline preload="none">
           <source src="videos/video1.mp4" type="video/mp4"/>
           <source src="videos/video1.MP4" type="video/mp4"/>
-          <source src="videos/video1.mov" type="video/mp4"/>
+          <source src="videos/video1.mov" type="video/quicktime"/>
         </video>
         <div class="video-overlay"></div>
         <span class="video-label">My happy place 🤍</span>
@@ -569,7 +569,7 @@ button{cursor:pointer;border:none;background:none;font:inherit}
         <video autoplay muted loop playsinline preload="none">
           <source src="videos/video2.mp4" type="video/mp4"/>
           <source src="videos/video2.MP4" type="video/mp4"/>
-          <source src="videos/video2.mov" type="video/mp4"/>
+          <source src="videos/video2.mov" type="video/quicktime"/>
         </video>
         <div class="video-overlay"></div>
         <span class="video-label">My heartbeat 💓</span>
@@ -578,7 +578,7 @@ button{cursor:pointer;border:none;background:none;font:inherit}
         <video autoplay muted loop playsinline preload="none">
           <source src="videos/video3.mp4" type="video/mp4"/>
           <source src="videos/video3.MP4" type="video/mp4"/>
-          <source src="videos/video3.mov" type="video/mp4"/>
+          <source src="videos/video3.mov" type="video/quicktime"/>
         </video>
         <div class="video-overlay"></div>
         <span class="video-label">My wife 💍</span>
@@ -587,7 +587,7 @@ button{cursor:pointer;border:none;background:none;font:inherit}
         <video autoplay muted loop playsinline preload="none">
           <source src="videos/video4.mp4" type="video/mp4"/>
           <source src="videos/video4.MP4" type="video/mp4"/>
-          <source src="videos/video4.mov" type="video/mp4"/>
+          <source src="videos/video4.mov" type="video/quicktime"/>
         </video>
         <div class="video-overlay"></div>
         <span class="video-label">My all in one 🌹</span>
@@ -596,7 +596,7 @@ button{cursor:pointer;border:none;background:none;font:inherit}
         <video autoplay muted loop playsinline preload="none">
           <source src="videos/video5.mp4" type="video/mp4"/>
           <source src="videos/video5.MP4" type="video/mp4"/>
-          <source src="videos/video5.mov" type="video/mp4"/>
+          <source src="videos/video5.mov" type="video/quicktime"/>
         </video>
         <div class="video-overlay"></div>
         <span class="video-label">My everything ✨</span>
@@ -694,7 +694,7 @@ async function loadImg(id, base, folder) {
       const r = await fetch(url, {method:'HEAD', cache:'no-store'});
       if (r.ok) {
         img.onerror = showFallback;
-        img.src = url;
+        img.src = url;  // onerror set first so cache-fast failures are caught
         return;
       }
     } catch(e) {}
