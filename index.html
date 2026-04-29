@@ -160,7 +160,10 @@ button{cursor:pointer;border:none;background:none;font:inherit}
   font-weight:600;letter-spacing:0.1em;margin-bottom:2.5rem;
 }
 .story-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
-@media(max-width:640px){.story-grid{grid-template-columns:1fr}}
+@media(max-width:640px){
+  .story-grid{grid-template-columns:1fr}
+  .story-img-frame{aspect-ratio:4/3;max-height:320px}
+}
 .story-text p{
   font-size:1.05rem;line-height:1.85;color:#4a2a32;margin-bottom:1.2rem;
 }
@@ -222,7 +225,10 @@ button{cursor:pointer;border:none;background:none;font:inherit}
   display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;
   position:relative;z-index:1;
 }
-@media(max-width:640px){.askout-card{grid-template-columns:1fr;padding:2rem}}
+@media(max-width:640px){
+  .askout-card{grid-template-columns:1fr;padding:2rem;gap:1.5rem}
+  .askout-img-frame{aspect-ratio:4/3;max-height:320px}
+}
 .askout-img-frame{
   border-radius:20px;overflow:hidden;aspect-ratio:4/5;
   box-shadow:0 20px 60px rgba(0,0,0,0.5);
