@@ -313,27 +313,27 @@ button{cursor:pointer;border:none;background:none;font:inherit}
     </div>
     <div class="gallery-strip reveal" style="transition-delay:0.15s">
       <div class="g-item">
-        <img src="images/photo1.jpg" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p1" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
         <div class="g-fallback">🥰</div>
         <span class="g-label">NYSC days 🏕️</span>
       </div>
       <div class="g-item">
-        <img src="images/photo2.jpg" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p2" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
         <div class="g-fallback">💑</div>
         <span class="g-label">My princess 👑</span>
       </div>
       <div class="g-item">
-        <img src="images/photo3.jpg" alt="Fiyin" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p3" alt="Fiyin" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
         <div class="g-fallback">🌸</div>
         <span class="g-label">She's everything 💕</span>
       </div>
       <div class="g-item">
-        <img src="images/photo4.jpg" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p4" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
         <div class="g-fallback">❤️</div>
         <span class="g-label">Forever vibes ✨</span>
       </div>
       <div class="g-item">
-        <img src="images/photo5.jpg" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <img id="p5" alt="Us" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
         <div class="g-fallback">🌹</div>
       </div>
     </div>
@@ -545,6 +545,21 @@ canvas.pixel-char{image-rendering:pixelated;image-rendering:crisp-edges}
 </footer>
 
 <script>
+/* ── Smart image loader (tries jpg, JPG, jpeg) ── */
+function loadImg(id, base) {
+  const exts = ['jpg','JPG','jpeg','JPEG','png'];
+  const img = document.getElementById(id);
+  if (!img) return;
+  let i = 0;
+  function tryNext() {
+    if (i >= exts.length) { img.style.display='none'; img.nextElementSibling.style.display='flex'; return; }
+    img.onerror = tryNext;
+    img.src = 'images/' + base + '.' + exts[i++];
+  }
+  tryNext();
+}
+['p1','p2','p3','p4','p5'].forEach((id,i) => loadImg(id, 'photo'+(i+1)));
+
 /* ── Intersection observer ── */
 const io = new IntersectionObserver(e => e.forEach(x => {
   if(x.isIntersecting) x.target.classList.add('visible');
