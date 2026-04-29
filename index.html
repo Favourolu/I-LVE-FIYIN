@@ -56,13 +56,13 @@ button{cursor:pointer;border:none;background:none;font:inherit}
 .hero{
   position:relative;min-height:100vh;display:flex;flex-direction:column;
   align-items:center;justify-content:center;text-align:center;padding:2rem;
-  background:radial-gradient(ellipse 120% 80% at 50% 60%,#3d0d1a 0%,var(--dark) 65%);
+  background:radial-gradient(ellipse 140% 90% at 50% 55%,#7a1530 0%,#3d0d1a 45%,#1a0508 80%);
   overflow:hidden;
 }
 .hero-particles{position:absolute;inset:0;pointer-events:none;z-index:0}
 .hero-glow{
   position:absolute;width:600px;height:600px;border-radius:50%;
-  background:radial-gradient(circle,rgba(232,99,122,0.18),transparent 70%);
+  background:radial-gradient(circle,rgba(232,99,122,0.45),transparent 70%);
   top:50%;left:50%;transform:translate(-50%,-60%);pointer-events:none;
 }
 .hero-content{position:relative;z-index:1}
@@ -742,7 +742,7 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
     pts.forEach(p=>{
       p.life+=p.speed;
       if(p.life>1){ p.life=0; p.x=Math.random()*c.width; p.y=c.height+20; }
-      const a=Math.sin(p.life*Math.PI)*0.2;
+      const a=Math.sin(p.life*Math.PI)*0.55;
       const y=p.y-p.life*c.height*0.9;
       const dx=Math.sin(p.life*Math.PI*2)*20;
       heart(p.x+dx,y,p.r*5,a);
