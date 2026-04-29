@@ -678,11 +678,12 @@ function loadImg(id, base) {
   const exts = ['jpg','JPG','jpeg','JPEG','png'];
   const img = document.getElementById(id);
   if (!img) return;
+  const bust = '?v=' + Date.now();
   let i = 0;
   function tryNext() {
     if (i >= exts.length) { img.style.display='none'; img.nextElementSibling.style.display='flex'; return; }
     img.onerror = tryNext;
-    img.src = 'images/' + base + '.' + exts[i++];
+    img.src = 'images/' + base + '.' + exts[i++] + bust;
   }
   tryNext();
 }
